@@ -80,6 +80,7 @@ def move_to_bag_color(color: str):
 def dispose_bag(color: str):
     move_to_ramp()
     activate_gripper(close=True)
+    move_to_in_between()
     move_to_bag_color(color)
     move_to_in_between()
     move_to_base()
