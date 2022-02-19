@@ -5,7 +5,7 @@ import server_socket_API
 import bigquery_comms_API
 
 key_management_path = '../API_KEY_MANAGEMENT/'
-json_key_file = key_management_path + 'aia-thesis-project-v1-a69cdd9b9882.json'
+json_key_file = 'aia-thesis-project-v1-a69cdd9b9882.json'
 schema = [
     {'name': 'RFID', 'type': 'STRING', 'mode': 'required'},
     {'name': 'BAG_COLOR', 'type': 'STRING', 'mode': 'required'},
