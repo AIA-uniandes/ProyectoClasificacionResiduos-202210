@@ -23,9 +23,9 @@ while True:
     data_df = pd.DataFrame.from_dict(initial_data,)
 
     # TODO: Classification
-    classified_black = 1
-    classified_white = 1
-    classified_green = 1
+    classified_black = 0
+    classified_white = 0
+    classified_green = 0
 
     data_df['BLACK_BAG'] = classified_black
     data_df['WHITE_BAG'] = classified_white
