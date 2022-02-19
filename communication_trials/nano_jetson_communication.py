@@ -54,6 +54,7 @@ while True:
                             , work_table=work_table, work_dataset=work_dataset)
     bigquery_comms_API.create_if_not_exists_table(schema=schema)
     bigquery_comms_API.try_insert_rows_table(rows=detected_rows)
+    print('data sent to bigquery')
 
     client_socket_API.init()
     client_socket_API.establish_connection(IP_address,)
