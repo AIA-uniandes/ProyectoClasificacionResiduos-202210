@@ -9,18 +9,18 @@ while True:
     server_socket_API.init()
     server_socket_API.set_to_listen()
     message = server_socket_API.get_message()
-
+    print(message)
     SEPARATOR = ','
     message_split = message.split(SEPARATOR)
 
     date_time_obj = datetime.strptime(message_split[1], '%Y-%m-%d_%H-%M-%S')
 
     initial_data = {
-        'RFID': message_split[0]
-        , 'DATE_TIME_READ': date_time_obj
+        'RFID': [message_split[0]]
+        , 'DATE_TIME_READ': [date_time_obj]
     }
 
-    data_df = pd.DataFrame.from_dict(initial_data)
+    data_df = pd.DataFrame.from_dict(initial_data,)
 
     # TODO: Classification
     classified_black = 1
