@@ -26,6 +26,6 @@ def get_message():
 
     received = client_socket.recv(1024).decode()
 
-    return received
+    return address, received
 
 

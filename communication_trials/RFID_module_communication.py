@@ -19,7 +19,7 @@ while True:
 
     server_socket_API.init()
     server_socket_API.set_to_listen()
-    message = server_socket_API.get_message()
+    IP_address, message = server_socket_API.get_message()
 
     if message == 'OK':
         continue

@@ -1,3 +1,5 @@
+import datetime
+
 from bigquery import get_client
 
 # BigQuery project id as listed in the Google Developers Console.
@@ -16,21 +18,37 @@ client = get_client(json_key_file=json_key, readonly=False)
 
 # Create a new table.
 schema = [
-    {'name': 'foo', 'type': 'STRING', 'mode': 'nullable'},
-    {'name': 'bar', 'type': 'FLOAT', 'mode': 'nullable'}
+    {'name': 'RFID', 'type': 'STRING', 'mode': 'required'},
+    {'name': 'BAG_COLOR', 'type': 'STRING', 'mode': 'required'},
+    {'name': 'BAG_COUNT', 'type': 'INTEGER', 'mode': 'required'},
+    {'name': 'DATE_REGISTERED', 'type': 'DATETIME', 'mode': 'required'},
 ]
 
 dataset = 'FIRST_TESTS_DS'
-table = 'TEST_TABLE'
+table = 'TRIAL_FOR_IOT_ARCH'
 
 exists = client.check_table(dataset, table)
 print('Check exists: ', exists)
 
 if exists:
+    deleted = client.delete_table(dataset, table)
+else:
     created = client.create_table(dataset, table, schema)
 
-# Delete an existing table.
-deleted = client.delete_table(dataset, table)
 
 exists = client.check_table(dataset, table)
 print('Check exists: ', exists)
+
+if not exists:
+    created = client.create_table(dataset, table, schema)
+
+rows = [
+    {'RFID': 'ABCD1234', 'BAG_COLOR': 'black', 'BAG_COUNT': 0, 'DATE_REGISTERED': datetime.datetime.now().isoformat()},
+    {'RFID': 'ABCD1234', 'BAG_COLOR': 'white', 'BAG_COUNT': 0, 'DATE_REGISTERED': datetime.datetime.now().isoformat()},
+    {'RFID': 'ABCD1234', 'BAG_COLOR': 'green', 'BAG_COUNT': 0, 'DATE_REGISTERED': datetime.datetime.now().isoformat()},
+]
+
+inserted = client.push_rows(dataset, table, rows,)
+print('inserted: ', inserted)
+
+
