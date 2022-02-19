@@ -37,15 +37,15 @@ while True:
     classified_green = 0
 
     detected_black = detected_data
-    detected_black['BAG_COLOR'] = detected_data['black']
+    detected_black['BAG_COLOR'] = 'black'
     detected_black['BAG_COUNT'] = classified_black
 
     detected_white = detected_data
-    detected_black['BAG_COLOR'] = detected_data['white']
+    detected_black['BAG_COLOR'] = 'white'
     detected_white['BAG_COUNT'] = classified_white
 
     detected_green = detected_data
-    detected_black['BAG_COLOR'] = detected_data['greens']
+    detected_black['BAG_COLOR'] = 'greens'
     detected_green['BAG_COUNT'] = classified_green
 
     detected_rows = [detected_black, detected_white, detected_green]
@@ -54,7 +54,7 @@ while True:
                             , work_table=work_table, work_dataset=work_dataset)
     bigquery_comms_API.create_if_not_exists_table(schema=schema)
     bigquery_comms_API.try_insert_rows_table(rows=detected_rows)
-    print('data sent to bigquery')
+    print('data sent to bigquery', detected_rows)
 
     client_socket_API.init()
     client_socket_API.establish_connection(IP_address,)
