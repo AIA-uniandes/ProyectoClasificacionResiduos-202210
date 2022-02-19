@@ -17,13 +17,14 @@ while True:
     client_socket_API.establish_connection('192.168.20.87',)
     client_socket_API.send_message_and_close(message_to_edge_node,)
 
-    while True:
-        server_socket_API.init()
-        server_socket_API.set_to_listen()
-        message = server_socket_API.get_message()
+    server_socket_API.init()
+    server_socket_API.set_to_listen()
+    message = server_socket_API.get_message()
 
-        if message == 'OK':
-            break
+    if message == 'OK':
+        continue
+    else:
+        break
 
 
 
