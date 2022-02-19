@@ -1,15 +1,26 @@
-import pandas as pd
 from datetime import datetime
 
 import client_socket_API
 import server_socket_API
+import bigquery_comms_API
+
+key_management_path = '../API_KEY_MANAGEMENT/'
+json_key_file = key_management_path + 'aia-thesis-project-v1-a69cdd9b9882.json'
+schema = [
+    {'name': 'RFID', 'type': 'STRING', 'mode': 'required'},
+    {'name': 'BAG_COLOR', 'type': 'STRING', 'mode': 'required'},
+    {'name': 'BAG_COUNT', 'type': 'INTEGER', 'mode': 'required'},
+    {'name': 'DATE_REGISTERED', 'type': 'DATETIME', 'mode': 'required'},
+]
+work_dataset = 'DEVELOPMENT_BETA'
+work_table = 'BAG_COUNT_RFID_DATETIME'
 
 while True:
 
     server_socket_API.init()
     server_socket_API.set_to_listen()
     IP_address, message = server_socket_API.get_message()
-    print(message, ', message recieved by: ', IP_address)
+    print(message, ', message received by: ', IP_address)
     SEPARATOR = ','
     message_split = message.split(SEPARATOR)
 
@@ -39,9 +50,11 @@ while True:
 
     detected_rows = [detected_black, detected_white, detected_green]
 
-    # TODO: Send to Big Data
+    bigquery_comms_API.init(key_management_path=key_management_path, json_key_file=json_key_file
+                            , work_table=work_table, work_dataset=work_dataset)
+    bigquery_comms_API.create_if_not_exists_table(schema=schema)
+    bigquery_comms_API.try_insert_rows_table(rows=detected_rows)
 
-    ok_event = input('OK (enter): ')
     client_socket_API.init()
     client_socket_API.establish_connection(IP_address,)
     client_socket_API.send_message_and_close('OK',)

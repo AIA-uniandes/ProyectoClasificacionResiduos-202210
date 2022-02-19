@@ -2,15 +2,10 @@ import datetime
 
 from bigquery import get_client
 
-# BigQuery project id as listed in the Google Developers Console.
-project_id = 'aia-thesis-project-v1'
-
-# Service account email address as listed in the Google Developers Console.
-service_account = 'aia-tests-angel@aia-thesis-project-v1.iam.gserviceaccount.com'
-
 
 # JSON key provided by Google
-json_key = '../API_KEY_MANAGEMENT/aia-thesis-project-v1-a69cdd9b9882.json'
+key_management_path = '../API_KEY_MANAGEMENT/'
+json_key = key_management_path + 'aia-thesis-project-v1-a69cdd9b9882.json'
 
 
 client = get_client(json_key_file=json_key, readonly=False)
