@@ -20,6 +20,7 @@ while True:
     server_socket_API.init()
     server_socket_API.set_to_listen()
     IP_address, message = server_socket_API.get_message()
+    print(IP_address)
     print(message, ', message received by: ', IP_address)
     SEPARATOR = ','
     message_split = message.split(SEPARATOR)
