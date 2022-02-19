@@ -27,8 +27,8 @@ while True:
     date_time_obj = datetime.strptime(message_split[1], '%Y-%m-%d_%H-%M-%S')
 
     detected_data = {
-        'RFID': [message_split[0]]
-        , 'DATE_REGISTERED': [date_time_obj].isoformat()
+        'RFID': message_split[0]
+        , 'DATE_REGISTERED': date_time_obj.isoformat()
     }
 
     # TODO: Classification
