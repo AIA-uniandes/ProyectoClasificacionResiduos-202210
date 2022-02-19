@@ -14,6 +14,9 @@ schema = [
 ]
 work_dataset = 'DEVELOPMENT_BETA'
 work_table = 'BAG_COUNT_RFID_DATETIME'
+bigquery_comms_API.init(key_management_path=key_management_path, json_key_file=json_key_file
+                            , work_table=work_table, work_dataset=work_dataset)
+bigquery_comms_API.create_if_not_exists_table(schema=schema)
 
 while True:
 
@@ -37,23 +40,20 @@ while True:
     classified_white = 0
     classified_green = 0
 
-    detected_black = detected_data
+    detected_black = dict(detected_data)
     detected_black['BAG_COLOR'] = 'black'
     detected_black['BAG_COUNT'] = classified_black
 
-    detected_white = detected_data
-    detected_black['BAG_COLOR'] = 'white'
+    detected_white = dict(detected_data)
+    detected_white['BAG_COLOR'] = 'white'
     detected_white['BAG_COUNT'] = classified_white
 
-    detected_green = detected_data
-    detected_black['BAG_COLOR'] = 'greens'
+    detected_green = dict(detected_data)
+    detected_green['BAG_COLOR'] = 'green'
     detected_green['BAG_COUNT'] = classified_green
 
     detected_rows = [detected_black, detected_white, detected_green]
 
-    bigquery_comms_API.init(key_management_path=key_management_path, json_key_file=json_key_file
-                            , work_table=work_table, work_dataset=work_dataset)
-    bigquery_comms_API.create_if_not_exists_table(schema=schema)
     bigquery_comms_API.try_insert_rows_table(rows=detected_rows)
     print('data sent to bigquery', detected_rows)
 
