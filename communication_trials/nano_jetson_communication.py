@@ -39,6 +39,7 @@ while True:
     classified_black = 0
     classified_white = 0
     classified_green = 0
+    classified_undefined = 0
 
     detected_black = dict(detected_data)
     detected_black['BAG_COLOR'] = 'black'
@@ -52,7 +53,22 @@ while True:
     detected_green['BAG_COLOR'] = 'green'
     detected_green['BAG_COUNT'] = classified_green
 
-    detected_rows = [detected_black, detected_white, detected_green]
+    detected_undefined = dict(detected_data)
+    detected_undefined['BAG_COLOR'] = 'undefined'
+    detected_undefined['BAG_COUNT'] = classified_undefined
+
+    detected_rows = []
+    if classified_black > 0:
+        detected_rows.append(detected_black)
+
+    if classified_white > 0:
+        detected_rows.append(detected_white)
+
+    if classified_green > 0:
+        detected_rows.append(detected_green)
+
+    if classified_undefined > 0:
+        detected_rows.append(detected_undefined)
 
     bigquery_comms_API.try_insert_rows_table(rows=detected_rows)
     print('data sent to bigquery', detected_rows)
