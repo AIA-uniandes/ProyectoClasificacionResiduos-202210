@@ -1,3 +1,4 @@
+import sys
 from datetime import datetime
 
 import client_socket_API
@@ -41,6 +42,12 @@ while True:
     classified_green = 0
     classified_undefined = 0
 
+    res_array = []
+    if sys.platform.startswith('win'):
+        print('internal testing')
+    else:
+        print('nano')
+
     detected_black = dict(detected_data)
     detected_black['BAG_COLOR'] = 'black'
     detected_black['BAG_COUNT'] = classified_black
@@ -70,8 +77,9 @@ while True:
     if classified_undefined > 0:
         detected_rows.append(detected_undefined)
 
-    bigquery_comms_API.try_insert_rows_table(rows=detected_rows)
-    print('data sent to bigquery', detected_rows)
+    if len(detected_rows) > 0:
+        bigquery_comms_API.try_insert_rows_table(rows=detected_rows)
+        print('data sent to bigquery', detected_rows)
 
     client_socket_API.init()
     client_socket_API.establish_connection(IP_address,)
