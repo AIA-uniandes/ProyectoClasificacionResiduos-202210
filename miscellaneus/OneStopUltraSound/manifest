@@ -1,0 +1,12 @@
+[app]
+name: OneStopUltrasound
+category: Tests
+author: Angel Rodriguez
+icon: icon.png
+desc: Control Interface for the IoT Architecture of AIA Robotics project
+url: http://cfw.ftcommunity.de/ftcommunity-TXT/en/programming/python/tutorial-1.html
+exec: one_stop_ultrasound.py
+managed: yes
+uuid: 151de0c0-965c-11ec-8bc2-0800200c9a66
+version: 1.0
+firmware: 0.9
