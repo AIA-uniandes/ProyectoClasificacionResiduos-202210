@@ -4,7 +4,7 @@ import paramiko
 global ssh
 
 
-def establish_connection(host, username, password="", port=22):
+def establish_connection(host, username='ftc', password="", port=22):
     global ssh
 
     print('Start BAND Connection')
@@ -21,7 +21,7 @@ def exec_command_exit_status(command_path):
 
     export_path = 'export PYTHONPATH=/opt/ftc'
 
-    compound_command = export_path + '&&' + command_path
+    compound_command = export_path + ' && ' + command_path
 
     stdin, stdout, stderr = ssh.exec_command(compound_command)
 

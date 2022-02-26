@@ -4,6 +4,7 @@ from datetime import datetime
 import bigquery_comms_API
 import client_socket_API
 import paramiko_band_movement_API
+import robot_movement_API
 import server_socket_API
 
 key_management_path = '../API_KEY_MANAGEMENT/'
@@ -16,12 +17,15 @@ schema = [
 ]
 work_dataset = 'DEVELOPMENT_BETA'
 work_table = 'BAG_COUNT_RFID_DATETIME'
-bigquery_comms_API.init(key_management_path=key_management_path, json_key_file=json_key_file
-                            , work_table=work_table, work_dataset=work_dataset)
+bigquery_comms_API.init(key_management_path=key_management_path, json_key_file=json_key_file,
+                        work_table=work_table, work_dataset=work_dataset)
 bigquery_comms_API.create_if_not_exists_table(schema=schema)
 
+bands_txt_controller_ip = ''
 repetitive_command_bands = 'apps/151de0c0-965c-11ec-8bc2-0800200c9a66/one_stop_ultrasound.py'
-paramiko_band_movement_API.establish_connection(host='', username='', password='',)
+paramiko_band_movement_API.establish_connection(host=bands_txt_controller_ip,)
+
+robot_ip = ''
 
 while True:
 
@@ -34,8 +38,8 @@ while True:
     date_time_obj = datetime.strptime(message_split[1], '%Y-%m-%d_%H-%M-%S')
 
     detected_data = {
-        'RFID': message_split[0]
-        , 'DATE_REGISTERED': date_time_obj.isoformat()
+        'RFID': message_split[0],
+        'DATE_REGISTERED': date_time_obj.isoformat()
     }
     
     paramiko_band_movement_API.exec_command_exit_status(command_path=repetitive_command_bands)
@@ -46,28 +50,33 @@ while True:
         path_to_detected_bags_file = 'trial_result.txt'
     else:
         print('nano')
-        # TODO: Execute Docker .py & Look for File Result of Classifications
-        path_to_detected_bags_file = ''
+        # TODO: Execute .py inside Docker From Nano & Look for Result File of Bags Detected 'bags_detected.txt'
+        path_to_docker_results = '/'
+        path_to_detected_bags_file = path_to_docker_results + 'bags_detected.txt'
 
     file = open(path_to_detected_bags_file, 'rt')
     data = file.read()
     classified_bags = data.split('\n')
 
     classified_dict = {
-        'black': 0
-        , 'white': 0
-        , 'green': 0
-        , 'undefined': 0
+        'black': 0,
+        'white': 0,
+        'green': 0,
+        'undefined': 0
     }
+
+    robot_movement_API.establish_connection_init_parameters(robot_ip)
     
     peek_first_bag_to_deposit = classified_bags.pop(0)
     classified_dict[peek_first_bag_to_deposit] += 1
-    # TODO: Deposit first bag
+    robot_movement_API.dispose_bag(peek_first_bag_to_deposit)
 
     for bag_color in classified_bags:
         paramiko_band_movement_API.exec_command(command_path=repetitive_command_bands)
-        # TODO: Send command to Robot for Depositing
+        robot_movement_API.dispose_bag(bag_color)
         classified_dict[bag_color] += 1
+
+    robot_movement_API.close_robot_connection()
 
     detected_black = dict(detected_data)
     detected_black['BAG_COLOR'] = 'black'

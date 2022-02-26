@@ -33,8 +33,3 @@ def send_message_and_close(message_string):
     print('Message sent')
     s.close()
 
-
-
-
-
-
