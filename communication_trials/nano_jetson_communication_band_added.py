@@ -1,9 +1,10 @@
 import sys
 from datetime import datetime
 
-import client_socket_API
-import server_socket_API
 import bigquery_comms_API
+import client_socket_API
+import paramiko_band_movement_API
+import server_socket_API
 
 key_management_path = '../API_KEY_MANAGEMENT/'
 json_key_file = 'aia-thesis-project-v1-a69cdd9b9882.json'
@@ -19,13 +20,14 @@ bigquery_comms_API.init(key_management_path=key_management_path, json_key_file=j
                             , work_table=work_table, work_dataset=work_dataset)
 bigquery_comms_API.create_if_not_exists_table(schema=schema)
 
+repetitive_command_bands = 'apps/151de0c0-965c-11ec-8bc2-0800200c9a66/one_stop_ultrasound.py'
+paramiko_band_movement_API.establish_connection(host='', username='', password='',)
+
 while True:
 
     server_socket_API.init()
     server_socket_API.set_to_listen()
     IP_address, message = server_socket_API.get_message()
-    print(IP_address)
-    print(message, ', message received by: ', IP_address)
     SEPARATOR = ','
     message_split = message.split(SEPARATOR)
 
@@ -35,8 +37,9 @@ while True:
         'RFID': message_split[0]
         , 'DATE_REGISTERED': date_time_obj.isoformat()
     }
+    
+    paramiko_band_movement_API.exec_command_exit_status(command_path=repetitive_command_bands)
 
-    res_array = []
     path_to_detected_bags_file = ''
     if sys.platform.startswith('win'):
         print('internal testing')
@@ -56,8 +59,14 @@ while True:
         , 'green': 0
         , 'undefined': 0
     }
+    
+    peek_first_bag_to_deposit = classified_bags.pop(0)
+    classified_dict[peek_first_bag_to_deposit] += 1
+    # TODO: Deposit first bag
 
     for bag_color in classified_bags:
+        paramiko_band_movement_API.exec_command(command_path=repetitive_command_bands)
+        # TODO: Send command to Robot for Depositing
         classified_dict[bag_color] += 1
 
     detected_black = dict(detected_data)
@@ -91,17 +100,8 @@ while True:
 
     if len(detected_rows) > 0:
         bigquery_comms_API.try_insert_rows_table(rows=detected_rows)
-        print('data sent to bigquery', detected_rows)
 
     client_socket_API.init()
     client_socket_API.establish_connection(IP_address,)
     client_socket_API.send_message_and_close('OK',)
-
-
-
-
-
-
-
-
 
