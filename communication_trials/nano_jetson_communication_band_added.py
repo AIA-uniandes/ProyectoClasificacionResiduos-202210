@@ -21,11 +21,11 @@ bigquery_comms_API.init(key_management_path=key_management_path, json_key_file=j
                         work_table=work_table, work_dataset=work_dataset)
 bigquery_comms_API.create_if_not_exists_table(schema=schema)
 
-bands_txt_controller_ip = ''
+bands_txt_controller_ip = '157.253.228.13'
 repetitive_command_bands = 'apps/151de0c0-965c-11ec-8bc2-0800200c9a66/one_stop_ultrasound.py'
 paramiko_band_movement_API.establish_connection(host=bands_txt_controller_ip,)
 
-robot_ip = ''
+robot_ip = '157.253.197.41'
 
 while True:
 
@@ -57,7 +57,7 @@ while True:
     file = open(path_to_detected_bags_file, 'rt')
     data = file.read()
     classified_bags = data.split('\n')
-
+    print(classified_bags)
     classified_dict = {
         'black': 0,
         'white': 0,
@@ -72,7 +72,8 @@ while True:
     robot_movement_API.dispose_bag(peek_first_bag_to_deposit)
 
     for bag_color in classified_bags:
-        paramiko_band_movement_API.exec_command(command_path=repetitive_command_bands)
+        print(bag_color)
+        paramiko_band_movement_API.exec_command_exit_status(command_path=repetitive_command_bands)
         robot_movement_API.dispose_bag(bag_color)
         classified_dict[bag_color] += 1
 
