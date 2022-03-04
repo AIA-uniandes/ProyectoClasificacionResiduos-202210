@@ -30,6 +30,7 @@ if not(sys.platform.startswith('win')):
     info_components = docker_info.split('\n')
     first_space = info_components[1].find(' ')
     docker_id = info_components[1][:first_space]
+    print('This is the running docker id: ',docker_id)
 
 bands_txt_controller_ip = '157.253.228.13'
 repetitive_command_bands = 'apps/151de0c0-965c-11ec-8bc2-0800200c9a66/one_stop_ultrasound.py'
