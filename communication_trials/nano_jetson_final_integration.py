@@ -1,12 +1,12 @@
 import sys
 from datetime import datetime
-from subprocess import run, PIPE
 
 import bigquery_comms_API
 import client_socket_API
 import paramiko_band_movement_API
 import robot_movement_API
 import server_socket_API
+import docker_controller_API
 
 key_management_path = '../API_KEY_MANAGEMENT/'
 json_key_file = 'aia-thesis-project-v1-a69cdd9b9882.json'
@@ -22,12 +22,18 @@ bigquery_comms_API.init(key_management_path=key_management_path, json_key_file=j
                         work_table=work_table, work_dataset=work_dataset)
 bigquery_comms_API.create_if_not_exists_table(schema=schema)
 
+robot_ip = '157.253.197.41'
+
+docker_id = ''
+if not(sys.platform.startswith('win')):
+    docker_info = docker_controller_API.get_stdout_from_bash('sudo docker ps')
+    info_components = docker_info.split('\n')
+    first_space = info_components[1].find(' ')
+    docker_id = info_components[1][:first_space]
+
 bands_txt_controller_ip = '157.253.228.13'
 repetitive_command_bands = 'apps/151de0c0-965c-11ec-8bc2-0800200c9a66/one_stop_ultrasound.py'
 paramiko_band_movement_API.establish_connection(host=bands_txt_controller_ip,)
-
-robot_ip = '157.253.197.41'
-
 
 while True:
 
@@ -52,6 +58,9 @@ while True:
         path_to_detected_bags_file = 'trial_result.txt'
     else:
         print('nano')
+
+        docker_controller_API.get_stdout_from_bash('sudo docker exec ' + docker_id +
+                                                   ' python3 /jetson-inference/data/inside_docker_container.py')
 
         path_to_docker_results = '/home/jetson-inference/data/'
         path_to_detected_bags_file = path_to_docker_results + 'bags_trial.txt'
@@ -117,12 +126,3 @@ while True:
     client_socket_API.establish_connection(IP_address,)
     client_socket_API.send_message_and_close('OK',)
 
-
-def get_stdout_from_bash(bash_script):
-    out = run([bash_script], shell=True, stdout=PIPE, stderr=PIPE)
-    print(out.stderr)
-    print(out.stdout)
-
-    var_out = out.stdout.decode('ascii')
-
-    return var_out
