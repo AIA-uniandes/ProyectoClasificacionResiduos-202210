@@ -6,10 +6,10 @@ global s
 def init():
     global s
 
-    s = socket.socket()
+    s = socket.socket((socket.AF_INET, socket.SOCK_STREAM))
 
 
-def establish_connection(host, port=5001):
+def establish_connection(host, port=80):
     global s
 
     print(f"[+] Connecting to {host}:{port}")
