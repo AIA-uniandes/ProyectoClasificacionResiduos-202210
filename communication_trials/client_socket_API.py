@@ -6,7 +6,7 @@ global s
 def init():
     global s
 
-    s = socket.socket((socket.AF_INET, socket.SOCK_STREAM))
+    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
 
 def establish_connection(host, port=80):
