@@ -22,7 +22,7 @@ bigquery_comms_API.init(key_management_path=key_management_path, json_key_file=j
                         work_table=work_table, work_dataset=work_dataset)
 bigquery_comms_API.create_if_not_exists_table(schema=schema)
 
-robot_ip = '157.253.197.41'
+robot_ip = '157.253.197.27'
 
 docker_id = ''
 if not(sys.platform.startswith('win')):
@@ -30,9 +30,9 @@ if not(sys.platform.startswith('win')):
     info_components = docker_info.split('\n')
     first_space = info_components[1].find(' ')
     docker_id = info_components[1][:first_space]
-    print('This is the running docker id: ',docker_id)
+    print('This is the running docker id: ', docker_id)
 
-bands_txt_controller_ip = '157.253.228.13'
+bands_txt_controller_ip = '157.253.228.43'
 repetitive_command_bands = 'apps/151de0c0-965c-11ec-8bc2-0800200c9a66/one_stop_ultrasound.py'
 paramiko_band_movement_API.establish_connection(host=bands_txt_controller_ip,)
 
