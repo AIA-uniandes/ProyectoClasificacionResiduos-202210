@@ -39,7 +39,7 @@ paramiko_band_movement_API.establish_connection(host=bands_txt_controller_ip,)
 while True:
 
     server_socket_API.init()
-    server_socket_API.set_to_listen()
+    server_socket_API.set_to_listen(server_port=80)
     IP_address, message = server_socket_API.get_message()
     SEPARATOR = ','
     message_split = message.split(SEPARATOR)
