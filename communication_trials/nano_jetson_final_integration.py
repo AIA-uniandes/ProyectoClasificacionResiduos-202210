@@ -34,7 +34,7 @@ if not(sys.platform.startswith('win')):
 
 bands_txt_controller_ip = '157.253.228.43'
 repetitive_command_bands = 'apps/151de0c0-965c-11ec-8bc2-0800200c9a66/one_stop_ultrasound.py'
-paramiko_band_movement_API.establish_connection(host=bands_txt_controller_ip,)
+#paramiko_band_movement_API.establish_connection(host=bands_txt_controller_ip,)
 
 while True:
 

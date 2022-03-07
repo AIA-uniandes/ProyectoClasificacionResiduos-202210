@@ -14,7 +14,7 @@ while True:
     message_to_edge_node = input_RFID_tag + SEPARATOR + dt_string
 
     client_socket_API.init()
-    client_socket_API.establish_connection('172.17.0.1',80)
+    client_socket_API.establish_connection('157.253.205.33',80)
     client_socket_API.send_message_and_close(message_to_edge_node,)
 
     server_socket_API.init()
