@@ -9,7 +9,7 @@ def init():
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
 
-def set_to_listen(server_host='', server_port=80):
+def set_to_listen(server_host='0.0.0.0', server_port=80):
     global s
 
     s.bind((server_host, server_port))
