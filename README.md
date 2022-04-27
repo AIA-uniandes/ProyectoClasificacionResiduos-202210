@@ -31,7 +31,7 @@ or, if the program is running in an IDE, you have to mannualy place the cursor o
 
 ### Run the entire System
 
-Once everything is ready you can run an RFID tag through the antenna and everything should be working smoothly.
+Once everything is ready you can run RFID tags through the antenna and everything should be working smoothly.
 
 ### During the First Execution
 
