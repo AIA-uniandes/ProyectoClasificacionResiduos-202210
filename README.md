@@ -25,7 +25,7 @@ Please start up in the order that they are listed:
 1. Make sure the RFID server is running and the cursor is placed on the terminal. 
 This can be achieved by either running "python PATH_TO_REPO/communication_trials/RFID_module_communication.py" via a terminal (cursor is already placed for input) 
 or, if the program is running in an IDE, you have to mannualy place the cursor on the terminal.
-2. Ensure the Docker Container on the Nano Jetson is running. For this you have open up a terminal on the Nano, cd into 'jetson-inference/' and run 'sudo docker/run_perisist_detection_dir.sh'. (This has to be done exactly as stated, the docker bash won't run if you cd into the folder that is placed. It has to be run from the parent folder). The docker subprocess, once the system is ready, runs the code documented here. [https://github.com/aa-rodriguezv/pytorch-ssd-modified-AIA-thesis/blob/master/inside_docker_container_final.py](some)
+2. Ensure the Docker Container on the Nano Jetson is running. For this you have open up a terminal on the Nano, cd into 'jetson-inference/' and run 'sudo docker/run_perisist_detection_dir.sh'. (This has to be done exactly as stated, the docker bash won't run if you cd into the folder that is placed. It has to be run from the parent folder). (The docker subprocess activated by the Nano, once the system is ready, is the code documented here: [Inside Docker Container](https://github.com/aa-rodriguezv/pytorch-ssd-modified-AIA-thesis/blob/master/inside_docker_container_final.py).)
 3. Run the Nano Jetson server. 'python PATH_TO_REPO/communication_trials/nano_jetson_final_integration.py'.
 4. Place the bags on the bands.
 
