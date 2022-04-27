@@ -35,7 +35,7 @@ Once everything is ready you can run an RFID tag through the antenna and everyth
 
 ### During the First Execution
 
-BEFORE RUNNING AN RFID TAG THROUGH THE ANTENNA.
+**PLEASE, DO NOT SKIP THIS PART.**
 
 As a one time thing for the Bands Controller you have to 'OK' the connection with the Nano. This is done on the visual interface for the first connection only (once the first tag is run through the antenna).
 
