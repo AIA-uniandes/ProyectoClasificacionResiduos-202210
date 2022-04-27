@@ -28,6 +28,10 @@ or, if the program is running in an IDE, you have to mannualy place the cursor o
 2. Ensure the Docker Container on the Nano Jetson is running. For this you have open up a terminal on the Nano, cd into 'jetson-inference/' and run 'sudo docker/run_perisist_detection_dir.sh'.
 3. Run the Nano Jetson server. 'python PATH_TO_REPO/communication_trials/nano_jetson_final_integration.py'.
 
+### Run the entire System
+
+Once everything is ready you can run an RFID tag through the antenna and everything should be working smoothly.
+
 ### During the First Execution
 
 As a one time thing for the Bands Controller you have to 'OK' the connection with the Nano. This is done on the visual interface for the first connection only (once the first tag is run through the antenna).
