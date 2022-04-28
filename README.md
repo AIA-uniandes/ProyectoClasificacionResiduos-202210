@@ -13,7 +13,7 @@
 
 All of the different devices should be connected under the same network. 
 
-1. On the RFID code (RFID_module_communication.py): Modify the IP on line 21.
+1. On the RFID code (RFID_module_communication.py): Modify the IP on line 21 to match the one on the Nano Jetson, for this check it with 'ip address' on a terminal and check for the 'LAN' section of the output.
 2. On the Nano Jetson code (nano_jetson_final_integration.py): Modify the robot_ip on line 29 and the bands_txt_controller_ip on line 40.
 
 ## Execution
