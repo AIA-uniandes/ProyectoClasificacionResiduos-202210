@@ -39,8 +39,6 @@ Once everything is ready you can run RFID tags through the antenna and everythin
 
 As a one time thing for the Bands TXT Controller you have to 'OK' the connection with the Nano. This is done on the visual interface of the controller for the first connection only (once the first tag is run through the antenna).
 
-**PS**: The docker subprocess activated by the Nano, once the system is ready, is the code documented here: [Inside Docker Container](https://github.com/aa-rodriguezv/pytorch-ssd-modified-AIA-thesis/blob/master/inside_docker_container_final.py).
-
 
 ## For Only Trying Out the Object Detection Model
 
@@ -50,6 +48,10 @@ As a one time thing for the Bands TXT Controller you have to 'OK' the connection
 4. Run, on the same terminal where the Docker Container is runnig, the inside_docker_container.py file. First cd into 'cd /jetson-inference/python/training/detection/ssd' and then run 'python3 inside_docker_container.py'. 
 
 This should show you the Inference Time and the Objects Detected.
+
+**PS**: The docker subprocess activated by the Nano, once the system is ready, is the code documented here: [Inside Docker Container](https://github.com/aa-rodriguezv/pytorch-ssd-modified-AIA-thesis/blob/master/inside_docker_container_final.py).
+
+**PSS**: The Nano Jetson SHOULD ALWAYS be connected to a Keyboard, a Mouse and a Monitor.
 
 
 
