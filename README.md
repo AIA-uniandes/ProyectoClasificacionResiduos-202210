@@ -37,7 +37,7 @@ Once everything is ready you can run RFID tags through the antenna and everythin
 
 **PLEASE, DO NOT SKIP THIS PART.**
 
-As a one time thing for the Bands Controller you have to 'OK' the connection with the Nano. This is done on the visual interface for the first connection only (once the first tag is run through the antenna).
+As a one time thing for the Bands TXT Controller you have to 'OK' the connection with the Nano. This is done on the visual interface of the controller for the first connection only (once the first tag is run through the antenna).
 
 **PS**: The docker subprocess activated by the Nano, once the system is ready, is the code documented here: [Inside Docker Container](https://github.com/aa-rodriguezv/pytorch-ssd-modified-AIA-thesis/blob/master/inside_docker_container_final.py).
 
