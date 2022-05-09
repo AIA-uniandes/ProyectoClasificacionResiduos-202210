@@ -50,7 +50,7 @@ As a one time thing for the Bands TXT Controller you have to 'OK' the connection
 
 This should show you the Inference Time and the Objects Detected.
 
-**PS**: The docker subprocess activated by the Nano, once the system is ready, is the code documented here: [Inside Docker Container](https://github.com/aa-rodriguezv/pytorch-ssd-modified-AIA-thesis/blob/master/inside_docker_container_final.py). Which, in turn, was forked from  [Pytorch SSD](https://github.com/dusty-nv/pytorch-ssd) to manage Neural Networks from Pytorch.
+**PS**: The docker subprocess activated by the Nano, once the system is ready, is the code documented here: [Inside Docker Container](https://github.com/aa-rodriguezv/pytorch-ssd-modified-AIA-thesis/blob/master/inside_docker_container_final.py). Which, in turn, was forked from  [Pytorch SSD Repository](https://github.com/dusty-nv/pytorch-ssd) to manage Neural Networks with Pytorch.
 
 **PSS**: The Nano Jetson SHOULD ALWAYS be connected to a Keyboard, a Mouse and a Monitor.
 
