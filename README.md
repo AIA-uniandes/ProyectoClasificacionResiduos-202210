@@ -8,6 +8,7 @@
 2. Turn on the Nano Jetson and connect it to a Camera (which has to be looking at the bands). The Nano Jetson also has to be connected via LAN to a local network.
 3. Make sure the Robot is turned on and has an available IP.
 4. Turn on the band mechanism with the OneStopUltrasound.py code.
+5. Make sure you have a json config file with an API Key for accessing BigQuery. This file is provided in the Google Cloud Console. More on the documentation for connecting with BigQuery here: [BigQuery-Python Open Source Module](https://github.com/tylertreat/BigQuery-Python)
 
 ### Prepare Communication
 
@@ -49,7 +50,7 @@ As a one time thing for the Bands TXT Controller you have to 'OK' the connection
 
 This should show you the Inference Time and the Objects Detected.
 
-**PS**: The docker subprocess activated by the Nano, once the system is ready, is the code documented here: [Inside Docker Container](https://github.com/aa-rodriguezv/pytorch-ssd-modified-AIA-thesis/blob/master/inside_docker_container_final.py).
+**PS**: The docker subprocess activated by the Nano, once the system is ready, is the code documented here: [Inside Docker Container](https://github.com/aa-rodriguezv/pytorch-ssd-modified-AIA-thesis/blob/master/inside_docker_container_final.py). Which, in turn, was forked from  [Pytorch SSD](https://github.com/dusty-nv/pytorch-ssd) to manage Neural Networks from Pytorch.
 
 **PSS**: The Nano Jetson SHOULD ALWAYS be connected to a Keyboard, a Mouse and a Monitor.
 
