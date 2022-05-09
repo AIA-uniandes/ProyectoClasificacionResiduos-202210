@@ -1,5 +1,8 @@
 # AIA-robot-project
 
+Path of the Project already configured in the Nano Jetson Server of the university: /home/disciotlab/thesis/aa-rodriguezv/AIA-robot-project
+Result files in Nano Jetson Server of the univeristy: /home/disciotlab/jetson-inference/data/coloredbags & /home/disciotlab/jetson-inference/data/bags_final.txt
+
 ## Prerequisites
 
 ### Prepare All Hardware
@@ -42,6 +45,8 @@ As a one time thing for the Bands TXT Controller you have to 'OK' the connection
 
 
 ## For Only Trying Out the Object Detection Model
+
+Camera Placement: Run 'camera-capture /dev/video0' to see what the camera sees and adjust it.
 
 1. Turn on the Nano Jetson and connect it to a Camera (which has to be looking at the bands).
 2. Ensure the Docker Container on the Nano Jetson is running. For this you have open up a terminal on the Nano, cd into 'jetson-inference/' and run 'sudo docker/run_perisist_detection_dir.sh'. (This has to be done exactly as stated, the docker bash won't run if you cd into the folder that the code is placed. It has to be run from the parent folder).
