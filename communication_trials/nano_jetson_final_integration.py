@@ -37,7 +37,7 @@ if not(sys.platform.startswith('win')):
     docker_id = info_components[1][:first_space]
     print('This is the running docker id: ', docker_id)
 
-bands_txt_controller_ip = '157.253.228.43'
+bands_txt_controller_ip = '157.253.228.114'
 repetitive_command_bands = 'apps/151de0c0-965c-11ec-8bc2-0800200c9a66/one_stop_ultrasound.py'
 # Establecer conexion con las bandas
 paramiko_band_movement_API.establish_connection(host=bands_txt_controller_ip,)
@@ -74,11 +74,12 @@ while True:
         # El codigo en Docker Carga el modelo de Deteccion, Captura la imagen, Detecta cuantas bolsas, de que color hay
         # Organizados de acuerdo a la proximidad al ultrasonido
         # Al final: escribir resultado en un archivo de directorio compartido (Docker y Nano)
-        docker_controller_API.get_stdout_from_bash('sudo docker exec ' + docker_id +
-                                                   ' python3 /jetson-inference/data/inside_docker_container.py')
+        docker_output = docker_controller_API.get_stdout_from_bash('sudo docker exec ' + docker_id +
+                                                   ' python3 /jetson-inference/python/training/detection/ssd/inside_docker_container_final.py')
+        print(docker_output)
         # Path de Espacio Compartido para leer resultado
-        path_to_docker_results = '/home/jetson-inference/data/'
-        path_to_detected_bags_file = path_to_docker_results + 'bags_trial.txt'
+        path_to_docker_results = '/home/disciotlab/jetson-inference/data/'
+        path_to_detected_bags_file = path_to_docker_results + 'bags_final.txt'
     # Leer Resultado y convertir a arreglo
     file = open(path_to_detected_bags_file, 'rt')
     data = file.read()
@@ -91,66 +92,66 @@ while True:
         'green': 0,
         'undefined': 0
     }
-    # Establecer la conexion con el robot
-    robot_movement_API.establish_connection_init_parameters(robot_ip)
-
-    # Recoger primera bolsa que ya esta en posicion
     peek_first_bag_to_deposit = classified_bags.pop(0)
-    # Agregar al conteo
-    classified_dict[peek_first_bag_to_deposit] += 1
-    # Enviar comando al robot de depositar
-    robot_movement_API.dispose_bag(peek_first_bag_to_deposit)
+    if peek_first_bag_to_deposit != '':
+        print('processing')
+        robot_movement_API.establish_connection_init_parameters(robot_ip)
 
-    # Por cada bolsa que me falta por recoger hacer
-    for bag_color in classified_bags:
-        print(bag_color)
-        # Mover las bandas hasta que se detecte algo
-        paramiko_band_movement_API.exec_command_exit_status(command_path=repetitive_command_bands)
-        # Depositar bolsa del color que ya sabemos que viene por resultado del docker
-        robot_movement_API.dispose_bag(bag_color)
+        # Recoger primera bolsa que ya esta en posicion
         # Agregar al conteo
-        classified_dict[bag_color] += 1
+        classified_dict[peek_first_bag_to_deposit] += 1
+        # Enviar comando al robot de depositar
+        robot_movement_API.dispose_bag(peek_first_bag_to_deposit)
 
-    # Cerrar conexion con robot
-    robot_movement_API.close_robot_connection()
+        # Por cada bolsa que me falta por recoger hacer
+        for bag_color in classified_bags:
+            print(bag_color)
+            # Mover las bandas hasta que se detecte algo
+            paramiko_band_movement_API.exec_command_exit_status(command_path=repetitive_command_bands)
+            # Depositar bolsa del color que ya sabemos que viene por resultado del docker
+            robot_movement_API.dispose_bag(bag_color)
+            # Agregar al conteo
+            classified_dict[bag_color] += 1
 
-    # Crear diccionario para cada color y poder enviar a BigQuery como filas
-    detected_black = dict(detected_data)
-    detected_black['BAG_COLOR'] = 'black'
-    detected_black['BAG_COUNT'] = classified_dict['black']
+        # Cerrar conexion con robot
+        robot_movement_API.close_robot_connection()
 
-    detected_white = dict(detected_data)
-    detected_white['BAG_COLOR'] = 'white'
-    detected_white['BAG_COUNT'] = classified_dict['white']
+        # Crear diccionario para cada color y poder enviar a BigQuery como filas
+        detected_black = dict(detected_data)
+        detected_black['BAG_COLOR'] = 'black'
+        detected_black['BAG_COUNT'] = classified_dict['black']
 
-    detected_green = dict(detected_data)
-    detected_green['BAG_COLOR'] = 'green'
-    detected_green['BAG_COUNT'] = classified_dict['green']
+        detected_white = dict(detected_data)
+        detected_white['BAG_COLOR'] = 'white'
+        detected_white['BAG_COUNT'] = classified_dict['white']
 
-    detected_undefined = dict(detected_data)
-    detected_undefined['BAG_COLOR'] = 'undefined'
-    detected_undefined['BAG_COUNT'] = classified_dict['undefined']
+        detected_green = dict(detected_data)
+        detected_green['BAG_COLOR'] = 'green'
+        detected_green['BAG_COUNT'] = classified_dict['green']
 
-    detected_rows = []
-    if classified_dict['black'] > 0:
-        detected_rows.append(detected_black)
+        detected_undefined = dict(detected_data)
+        detected_undefined['BAG_COLOR'] = 'undefined'
+        detected_undefined['BAG_COUNT'] = classified_dict['undefined']
 
-    if classified_dict['white'] > 0:
-        detected_rows.append(detected_white)
+        detected_rows = []
+        if classified_dict['black'] > 0:
+            detected_rows.append(detected_black)
 
-    if classified_dict['green'] > 0:
-        detected_rows.append(detected_green)
+        if classified_dict['white'] > 0:
+            detected_rows.append(detected_white)
 
-    if classified_dict['undefined'] > 0:
-        detected_rows.append(detected_undefined)
+        if classified_dict['green'] > 0:
+            detected_rows.append(detected_green)
 
-    if len(detected_rows) > 0:
-        # Enviar a BigQuery las filas de cada color que haya tenido 1 o mas bolsas depositadas
-        bigquery_comms_API.try_insert_rows_table(rows=detected_rows)
+        if classified_dict['undefined'] > 0:
+            detected_rows.append(detected_undefined)
+
+        if len(detected_rows) > 0:
+            # Enviar a BigQuery las filas de cada color que haya tenido 1 o mas bolsas depositadas
+            bigquery_comms_API.try_insert_rows_table(rows=detected_rows)
 
     # Establecer conexion con sistema RFID
     client_socket_API.init()
-    client_socket_API.establish_connection(IP_address,)
+    client_socket_API.establish_connection(IP_address,port=5001)
     # Habilitar RFID para que pueda recibir mas tags
     client_socket_API.send_message_and_close('OK',)
-
